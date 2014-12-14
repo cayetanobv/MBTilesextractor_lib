@@ -9,9 +9,21 @@ import shutil
 
 class MBTilesExtractor(object):
     
-    def __init__(self, input_filename, overwrite=False):
+    def __init__(self, input_filename, dirname=None, overwrite=False):
         self.input_filename = input_filename
-        self.dirname = self.input_filename[0:self.input_filename.index('.')]
+        
+        if dirname:
+            if not os.path.exists(dirname):
+                print 'Destination folder does not exist...\n'
+                exit()
+            filename = os.path.basename(self.input_filename[0:self.input_filename.index('.')])
+            self.dirname =  os.path.join(dirname,filename)
+            print dirname
+            print self.input_filename
+            print self.dirname
+        else:
+            self.dirname = self.input_filename[0:self.input_filename.index('.')]
+            
         self.overwrite = overwrite
     
     def extractTiles(self):
