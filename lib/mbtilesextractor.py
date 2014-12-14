@@ -14,8 +14,8 @@ class MBTilesExtractor(object):
         
         if dirname:
             if not os.path.exists(dirname):
-                print 'Destination folder does not exist...\n'
-                exit()
+                self.dirname = None
+                return
             filename = os.path.basename(self.input_filename[0:self.input_filename.index('.')])
             self.dirname =  os.path.join(dirname,filename)
 
@@ -26,13 +26,16 @@ class MBTilesExtractor(object):
     
     def extractTiles(self):
         if not os.path.exists(self.input_filename):
-            print 'MBTiles file does not exist...\n'
-            exit()
-        
+            result = 'MBTiles file does not exist...\n'
+            return result
+        if not self.dirname:
+            result = 'Destination folder does not exist...\n'
+            return result
+
         if os.path.exists(self.dirname):
             if self.overwrite == False:
-                print 'Data directory exists...\n'
-                exit()
+                result =  'Data directory exists...\n'
+                return result
             elif self.overwrite == True:
                 shutil.rmtree(self.dirname)
                 os.makedirs(self.dirname)
@@ -65,16 +68,15 @@ class MBTilesExtractor(object):
                 os.chdir('..')
                 os.chdir('..')
             
-            result = 'Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
+            result = 'Done! Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
             
-            print 'Done!\n', result
             return result
         
         except Exception as e:
             if os.path.exists(self.dirname):
                 shutil.rmtree(self.dirname)
             result = 'Error: %s - %s' % (e.message, e.args)
-            print result
+
             return result
     
     def __safeMakeDir(self, dir_path):
