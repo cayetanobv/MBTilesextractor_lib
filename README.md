@@ -18,9 +18,12 @@ Basic usage (*):
 ```
 from mbtilesextractor import MBTilesExtractor
 
-input_file = '/my_datafolder/my_file.mbtiles'
+input_file = '/source_folder/example.mbtiles'
 
-ex_mbt = MBTilesExtractor(input_file, overwrite=True)
+# optional: if not dirname, same folder as input_file
+dest_folder = '/dest_folder'
+
+ex_mbt = MBTilesExtractor(input_file, dirname=dest_folder, overwrite=True)
 
 ex_mbt.extractTiles()
 
