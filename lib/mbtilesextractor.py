@@ -18,9 +18,7 @@ class MBTilesExtractor(object):
                 exit()
             filename = os.path.basename(self.input_filename[0:self.input_filename.index('.')])
             self.dirname =  os.path.join(dirname,filename)
-            print dirname
-            print self.input_filename
-            print self.dirname
+
         else:
             self.dirname = self.input_filename[0:self.input_filename.index('.')]
             
@@ -67,13 +65,17 @@ class MBTilesExtractor(object):
                 os.chdir('..')
                 os.chdir('..')
             
-            print 'Done!'
-            print 'Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
+            result = 'Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
+            
+            print 'Done!\n', result
+            return result
         
         except Exception as e:
             if os.path.exists(self.dirname):
                 shutil.rmtree(self.dirname)
-            print 'Error: %s - %s' % (e.message, e.args)
+            result = 'Error: %s - %s' % (e.message, e.args)
+            print result
+            return result
     
     def __safeMakeDir(self, dir_path):
         if os.path.exists(dir_path):
