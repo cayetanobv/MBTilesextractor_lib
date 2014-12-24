@@ -75,10 +75,13 @@ class MBTilesExtractor(object):
             cursor.execute("SELECT value FROM metadata WHERE name='format'")
             img_format = cursor.fetchone()
             
-            if img_format[0] == 'png':
-                out_format = '.png'
-            elif img_format[0] == 'jpg':
-                out_format = '.jpg'
+            if img_format:
+                if img_format[0] == 'png':
+                    out_format = '.png'
+                elif img_format[0] == 'jpg':
+                    out_format = '.jpg'
+            else:
+                out_format = ''
             
             # The mbtiles format helpfully provides a table that aggregates all necessary info
             cursor.execute("SELECT * FROM tiles")
