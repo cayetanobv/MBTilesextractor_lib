@@ -1,17 +1,15 @@
-Description
-============
+#MBTilesextractor library
+##Description
 A little python library to take an mbtiles file and split it apart into a folder hierarchy of individual image tile files.
 
 This project is the conversion in a little class library of the command line utility developed by Patrick Barry:
 https://github.com/pbarry/MBTiles-extractor
 
 
-Requirements
-=============
+##Requirements
 - No external dependencies. This library only uses PSL (The Python Standard Library).
 
-Usage
-=======
+##Usage
 Basic usage (*):
 
 
@@ -33,8 +31,7 @@ print result
 
 (*) See lib/bootstrap.py
 
-License
-========
+##License
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
