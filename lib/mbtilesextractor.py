@@ -98,6 +98,9 @@ class MBTilesExtractor(object):
             
             result = 'Done! Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
             
+            # close database connection
+            connection.close()
+            
             return result
         
         except Exception as e:
