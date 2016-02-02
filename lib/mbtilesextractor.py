@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 #
-#  A little python library to take an mbtiles file and split it
-#  apart into a folder hierarchy of individual image tile files.
+#  A little python library to take an mbtiles file and split it apart
+#  into a folder hierarchy of individual image tile files (or pbf files
+#  for vector tiles).
 #
-#  This project is the conversion in a little class library of the
-#  command line utility developed by Patrick Barry:
+#  This project is a improved class library version of the command
+#  line utility developed by Patrick Barry:
 #  https://github.com/pbarry/MBTiles-extractor
 #
-#  Author: Cayetano Benavent, 2014.
+#  Author: Cayetano Benavent, 2014-2016.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -69,7 +70,6 @@ class MBTilesExtractor(object):
             os.makedirs(self.dirname)
 
         try:
-            # Database connection boilerplate
             connection = sqlite3.connect(self.input_filename)
             cursor = connection.cursor()
 
@@ -86,7 +86,6 @@ class MBTilesExtractor(object):
             else:
                 out_format = ''
 
-            # The mbtiles format helpfully provides a table that aggregates all necessary info
             cursor.execute("SELECT * FROM tiles")
 
             os.chdir(self.dirname)
@@ -108,7 +107,6 @@ class MBTilesExtractor(object):
 
             result = 'Done! Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
 
-            # close database connection
             connection.close()
 
             return result
