@@ -34,9 +34,30 @@ import shutil
 import gzip
 
 
-class MBTilesExtractor(object):
+class MBTilesExtractorException(Exception):
+    pass
 
-    def __init__(self, input_filename, dirname=None, overwrite=False):
+class MBTilesExtractor(object):
+    """
+    A little python library to take an mbtiles file and split it apart
+    into a folder hierarchy of individual image tile files (or pbf files
+    for vector tiles).
+
+    This project is a improved class library version of the command
+    line utility developed by Patrick Barry:
+    https://github.com/pbarry/MBTiles-extractor
+
+    >>> from mbtilesextractor import MBTilesExtractor
+    >>> input_file = '/source_folder/my_file.mbtiles'
+
+    # optional: if not dirname, same folder as input_file
+    >>> dest_folder = '/dest_folder'
+
+    >>> ex_mbt = MBTilesExtractor(input_file, dirname=dest_folder, overwrite=False)
+    >>> ex_mbt.extractTiles()
+    """
+
+    def __init__(self, input_filename, dirname=None, overwrite=True):
         self.input_filename = input_filename
 
         if dirname:
@@ -53,16 +74,15 @@ class MBTilesExtractor(object):
 
     def extractTiles(self):
         if not os.path.exists(self.input_filename):
-            result = 'MBTiles file does not exist...\n'
-            return result
+            raise MBTilesExtractorException('MBTiles file does not exist')
+
         if not self.dirname:
-            result = 'Destination folder does not exist...\n'
-            return result
+            raise MBTilesExtractorException('Destination folder does not exist')
 
         if os.path.exists(self.dirname):
             if self.overwrite == False:
-                result =  'Data directory exists...\n'
-                return result
+                raise MBTilesExtractorException('Data directory exists')
+
             elif self.overwrite == True:
                 shutil.rmtree(self.dirname)
                 os.makedirs(self.dirname)
@@ -114,9 +134,7 @@ class MBTilesExtractor(object):
         except Exception as e:
             if os.path.exists(self.dirname):
                 shutil.rmtree(self.dirname)
-            result = 'Error: %s - %s' % (e.message, e.args)
-
-            return result
+            raise
 
     def __safeMakeDir(self, dir_path):
         if os.path.exists(dir_path):
