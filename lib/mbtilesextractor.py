@@ -30,6 +30,7 @@ import os
 import sys
 import sqlite3
 import shutil
+import gzip
 
 
 class MBTilesExtractor(object):
@@ -92,9 +93,16 @@ class MBTilesExtractor(object):
             for row in cursor:
                 self.__setDir(str(row[0]))
                 self.__setDir(str(row[1]))
-                output_file = open(str(row[2]) + out_format, 'wb')
-                output_file.write(row[3])
-                output_file.close()
+
+                with open(str(row[2]) + out_format, 'wb') as output_file:
+                    output_file.write(row[3])
+
+                if out_format == '.pbf':
+                    with gzip.open(os.path.join(str(row[2]) + out_format), 'rb') as f:
+                        f_dec = f.read()
+                        with open(str(row[2]) + out_format, 'wb') as output_file2:
+                            output_file2.write(f_dec)
+
                 os.chdir('..')
                 os.chdir('..')
 
