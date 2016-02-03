@@ -55,10 +55,14 @@ class MBTilesExtractor(object):
 
     >>> ex_mbt = MBTilesExtractor(input_file, dirname=dest_folder, overwrite=False)
     >>> ex_mbt.extractTiles()
+
+    # get total nmber of tiles
+    >>> nt = ex_mbt.ntiles
     """
 
     def __init__(self, input_filename, dirname=None, overwrite=True):
         self.input_filename = input_filename
+        self.__ntiles = 0
 
         if dirname:
             if not os.path.exists(dirname):
@@ -71,6 +75,10 @@ class MBTilesExtractor(object):
             self.dirname = self.input_filename[0:self.input_filename.index('.')]
 
         self.overwrite = overwrite
+
+    @property
+    def ntiles(self):
+        return self.__ntiles
 
     def extractTiles(self):
         if not os.path.exists(self.input_filename):
@@ -125,11 +133,11 @@ class MBTilesExtractor(object):
                 os.chdir('..')
                 os.chdir('..')
 
-            result = 'Done! Extracted tiles from file "%s" in local directory "%s"\n' % (self.input_filename, self.dirname)
+            # does not work rowcount for select statements so...
+            cursor.execute("SELECT count(*) FROM tiles")
+            self.__ntiles = cursor.next()[0]
 
             connection.close()
-
-            return result
 
         except Exception as e:
             if os.path.exists(self.dirname):

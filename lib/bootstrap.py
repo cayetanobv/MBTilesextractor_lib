@@ -23,10 +23,13 @@ from mbtilesextractor import MBTilesExtractor
 input_file = '/source_folder/my_file.mbtiles'
 
 # optional: if not dirname, same folder as input_file
-dest_folder = '/dest_folder'
+dest_folder = '/tmp'
 
-ex_mbt = MBTilesExtractor(input_file, dirname=dest_folder, overwrite=False)
+ex_mbt = MBTilesExtractor(input_file, dirname=dest_folder, overwrite=True)
 
-result = ex_mbt.extractTiles()
+ex_mbt.extractTiles()
 
-print result
+# get total nmber of tiles
+nt = ex_mbt.ntiles
+
+print('Done! Extracted %d tiles from file "%s" in local directory "%s"\n' % (nt, input_file, dest_folder))
