@@ -135,7 +135,7 @@ class MBTilesExtractor(object):
 
             # does not work rowcount for select statements so...
             cursor.execute("SELECT count(*) FROM tiles")
-            self.__ntiles = cursor.next()[0]
+            self.__ntiles = cursor.fetchone()[0]
 
             connection.close()
 
