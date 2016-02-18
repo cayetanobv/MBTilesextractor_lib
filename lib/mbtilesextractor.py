@@ -60,9 +60,10 @@ class MBTilesExtractor(object):
     >>> nt = ex_mbt.ntiles
     """
 
-    def __init__(self, input_filename, dirname=None, overwrite=True):
+    def __init__(self, input_filename, dirname=None, overwrite=True, decompr=False):
         self.input_filename = input_filename
         self.__ntiles = 0
+        self.__decompr = decompr
 
         if dirname:
             if not os.path.exists(dirname):
@@ -105,12 +106,7 @@ class MBTilesExtractor(object):
             img_format = cursor.fetchone()
 
             if img_format:
-                if img_format[0] == 'png':
-                    out_format = '.png'
-                elif img_format[0] == 'jpg':
-                    out_format = '.jpg'
-                elif img_format[0] == 'pbf':
-                    out_format = '.pbf'
+                out_format = '.{}'.format(img_format[0])
             else:
                 out_format = ''
 
@@ -124,7 +120,7 @@ class MBTilesExtractor(object):
                 with open(str(row[2]) + out_format, 'wb') as output_file:
                     output_file.write(row[3])
 
-                if out_format == '.pbf':
+                if out_format == '.pbf' or self.__decompr:
                     with gzip.open(os.path.join(str(row[2]) + out_format), 'rb') as f:
                         f_dec = f.read()
                         with open(str(row[2]) + out_format, 'wb') as output_file2:
